@@ -1,4 +1,4 @@
-@extends('layouts.teacher')
+@extends('layouts.layout')
 @section('contents')
 
 <div class="container-fluid">
@@ -43,7 +43,7 @@
                     <td>
                         @if ($editing ?? false)
                             {{-- Input for editing grades --}}
-                            <input type="number" name="grades[{{ $g->id }}]" value="{{ $g->grade }}" class="form-control" required>
+                            <input type="number" step="0.01" name="grades[{{ $g->id }}]" value="{{ $g->grade }}" class="form-control" required>
                             @error("grades.$g->id")
                             <span class="text-danger">{{ $message }}</span>
                             @enderror

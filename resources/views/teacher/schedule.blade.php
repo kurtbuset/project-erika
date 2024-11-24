@@ -1,4 +1,4 @@
-@extends('layouts.teacher')
+@extends('layouts.layout')
 @section('title', 'dashboard')
 @section('contents')
 <div class="container-fluid">

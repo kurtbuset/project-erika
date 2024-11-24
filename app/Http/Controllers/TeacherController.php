@@ -10,20 +10,6 @@ use App\Models\Section;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
-
-// class TeacherController extends Controller
-// {
-//     public function __construct()
-//     {
-//         $this->middleware('role:teacher');
-//     }
-    
-//     public function index(){
-//         return view('teacher.index');
-//     }
-// }
-
 class TeacherController extends Controller
 {
     // Show all students of the logged-in teacher's classes

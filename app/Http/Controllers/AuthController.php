@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    public function login(){
         // Grade::create([
         //     'student_id' => 2,
         //     'class_id' => 1,

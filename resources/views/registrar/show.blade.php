@@ -1,4 +1,4 @@
-@extends('layouts.registrar')
+@extends('layouts.layout')
 @section('title', 'Dashboard')
 @section('contents')
 
