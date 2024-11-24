@@ -1,50 +1,72 @@
-@extends('layouts.student')
+@extends('layouts.registrar')
 @section('title', 'Dashboard')
 @section('contents')
 
-<h1>All Students</h1>
-
-<a href="{{ route('registrar.index') }}">bc logo</a>
 
 <!-- Search Form -->
-<form action="{{ route('registrar.index') }}" method="GET">
-    <label for="section">Filter by Section:</label>
-    <select id="section" name="section">
-        <option value="">All Students</option> <!-- Default option -->
-        @foreach ($sections as $class)
-            <option value="{{ $class->id }}" {{ request()->get('section') == $class->id ? 'selected' : '' }}>
-                {{ $class->name }}
-            </option>
-        @endforeach
-    </select>
+<div class="container-fluid">
+<div class="card shadow mb-4 p-3">
+<div class="card-header py-3 d-flex justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Students</h6>
+    <form >
+        <div class="d-flex">
+            <div>
+            <select id="section" name="section" class="text-secondary border border-1 rounded p-2 ms-3">
+                <option value="">All Students</option> 
+                @foreach ($sections as $class)
+                    <option class="text-secondary" value="{{ $class->id }}" {{ request()->get('section') == $class->id ? 'selected' : '' }}>
+                        {{ $class->name }}
+                    </option>
+                @endforeach
+            </select>
+            </div>
 
-    <input type="text" name="search" id="search" placeholder="Search students" value="{{ request()->get('search') }}">
-    <button type="submit">Search</button>
-</form>
+            <div class="input-group m-1">
+                <input type="text" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="search" value="{{ request()->get('search') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-<!-- Students Table -->
-<table class="table table-bordered w-50">
-    <thead>
-        <tr>
-            <th>Student Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($students as $student)
-            <tr>
-                <td>{{ $student->name }}</td>
-                <td>
-                    <a href="{{ route('registrar.show', $student->id) }}" class="btn btn-primary">View</a>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="2" class="text-center">No students found</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Student name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Student name</th>
+                    <th>Action</th>
+                </tr>
+            </tfoot>
+            <tbody>
+            @forelse ($students as $student)
+                <tr>
+                    <td>{{ $student->name }}</td>
+                    <td>
+                        <a href="{{ route('registrar.show', $student->id) }}" class="btn btn-primary">View Grades</a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="2" class="text-center">No students found</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
 
 <!-- Pagination Links -->
 <div class="pagination">
