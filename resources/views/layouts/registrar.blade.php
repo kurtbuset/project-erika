@@ -165,7 +165,7 @@
                     </form>
 
                     <!-- Topbar Search -->
-                    
+                    <img src="{{ asset('vendor/img/bcimage1.png') }}" style="height: 50px;" alt="">
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
