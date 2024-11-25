@@ -13,19 +13,28 @@ use Illuminate\Support\Facades\DB;
 class TeacherController extends Controller
 {
     // Show all students of the logged-in teacher's classes
-    public function index()
+    public function index(Request $request)
     {
         $teacher = Auth::user();
+        $selectedSection = $request->get('section');
+        $search = $request->get('search');
 
-        // Fetch the students who belong to the teacher's classes
-        $students = Student::whereHas('section', function ($query) use ($teacher) {
+        $students = Student::whereHas('section', function ($query) use ($teacher, $selectedSection) {
             $query->where('teacher_id', $teacher->id);
-        })->with('section')->get();
+            if ($selectedSection) {
+                $query->where('id', $selectedSection);
+            }
+        })
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->with('section')->get();
 
         $sections = $teacher->sections;
 
-        return view('teacher.index', compact('students', 'teacher', 'sections'));
+        return view('teacher.index', compact('students', 'teacher', 'sections', 'selectedSection'));
     }
+
 
     public function showSchedule(){
         $teacher = Auth::user();

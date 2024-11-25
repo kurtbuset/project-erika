@@ -5,26 +5,26 @@
 <div class="card shadow mb-4 p-3">
 <div class="card-header py-3 d-flex justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Teacher: {{ $teacher->name }}</h6>
-    <h6 class="m-0 font-weight-bold text-primary">Grade and section: 
-        @foreach ($sections as $section)
-            {{ $section->name }}{{ !$loop->last ? ', ' : '' }}
-        @endforeach
-    </h6>
-    <!-- <form >
+    
+
+
+    <form method="GET" action="{{ route('teacher.index') }}">
         <div class="d-flex">
             <div>
-            <select id="section" name="section" class="text-secondary border border-1 rounded p-2 ms-3">
-                <option value="">All Students</option> 
-                @foreach ($sections as $class)
-                    <option class="text-secondary" value="{{ $class->id }}" {{ request()->get('section') == $class->id ? 'selected' : '' }}>
-                        {{ $class->name }}
-                    </option>
-                @endforeach
-            </select>
+                <select id="section" name="section" class="text-secondary border border-1 rounded p-2 ms-3" onchange="this.form.submit()">
+                    <option value="" {{ $selectedSection == '' ? 'selected' : '' }}>All Students</option>
+                    @foreach ($sections as $section)
+                        <option value="{{ $section->id }}" {{ $selectedSection == $section->id ? 'selected' : '' }}>
+                            {{ $section->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="input-group m-1">
-                <input type="text" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="search" value="{{ request()->get('search') }}">
+                <input type="text" class="form-control bg-light border-1 small" placeholder="Search for..." 
+                    aria-label="Search" aria-describedby="basic-addon2" name="search" 
+                    value="{{ request()->get('search') }}">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search fa-sm"></i>
@@ -32,7 +32,8 @@
                 </div>
             </div>
         </div>
-    </form> -->
+    </form>
+
 </div>
 
 <div class="card-body">

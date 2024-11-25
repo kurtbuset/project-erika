@@ -32,6 +32,7 @@ class RegistrarController extends Controller
         return view('registrar.index', compact('students', 'sections'));
     }
 
+
     public function show(Student $student)
     {
         // Fetch student with their grades

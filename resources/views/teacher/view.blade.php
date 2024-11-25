@@ -14,9 +14,7 @@
             <button type="button" class="btn btn-outline-success" id="liveAlertBtn" data-bs-dismiss="alert" aria-label="Close">X</button>
         </div>
     @endif
-
-
-
+    
 
     @if ($view ?? false)
     <a class="btn btn-primary mb-3" href="{{ route('teacher.edit.grade', $student) }}">Edit Grade</a>

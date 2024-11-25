@@ -16,12 +16,32 @@ class GradesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'registrar',
-            'email' => 'registrar@gmail.com',
-            'password' =>bcrypt('registrar'),
-            'type' => 2
+        Grade::create([
+            'student_id' => 5,
+            'class_id' => 3,
+            'quarter' => '1st quarter',
+            'grade' => 90
         ]);
 
+        Grade::create([
+            'student_id' => 5,
+            'class_id' => 3,
+            'quarter' => '2nd quarter',
+            'grade' => 90
+        ]);
+
+        Grade::create([
+            'student_id' => 5,
+            'class_id' => 3,
+            'quarter' => '3rd quarter',
+            'grade' => 90
+        ]);
+
+        Grade::create([
+            'student_id' => 5,
+            'class_id' => 3,
+            'quarter' => '4th quarter',
+            'grade' => 90
+        ]);
     }
 }
