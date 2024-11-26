@@ -41,9 +41,9 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
             <tr>
-                <td>id</td>
-                <td>name</td>
-                <td>actions</td>
+                <td>Student id</td>
+                <td>Name</td>
+                <td>Actions</td>
             </tr>
             </thead>
             <tbody>
