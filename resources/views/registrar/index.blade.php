@@ -2,7 +2,12 @@
 @section('title', 'Dashboard')
 @section('contents')
 
-
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn btn-outline-success" id="liveAlertBtn" data-bs-dismiss="alert" aria-label="Close">X</button>
+    </div>
+@endif
 <!-- Search Form -->
 <div class="container-fluid">
 <div class="card shadow mb-4 p-3">

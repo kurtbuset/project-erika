@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RegistrarController extends Controller
@@ -42,5 +44,43 @@ class RegistrarController extends Controller
         $average = $student->grades->avg('grade');
 
         return view('registrar.show', compact('student', 'average'));
+    }
+
+    public function addStudent(){
+        $sections = Section::all();
+        return view('registrar.add', compact('sections'));
+    }
+
+    public function storeStudent(){
+        request()->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|min:8',
+            'confirm_password' => 'required|same:password',
+            'section' => 'required|exists:sections,id'
+        ]);
+        
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'password' => bcrypt(request('password')),
+            'type' => 0
+        ]);
+
+        $student = Student::create([
+            'name' => request('name'),
+            'user_id' => $user->id,
+            'class_id' => request('section')
+        ]);
+
+        $quarters = ['1st', '2nd', '3rd', '4th']; // Define quarters
+        foreach ($quarters as $quarter) {
+            Grade::create([
+                'student_id' => $student->id,
+                'quarter' => $quarter,
+                'grade' => 0, // Default grade
+            ]);
+        }
+        return redirect(route('registrar.index'))->with('success', 'Student added succesfully');
     }
 }
