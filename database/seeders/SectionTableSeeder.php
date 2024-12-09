@@ -14,8 +14,9 @@ class SectionTableSeeder extends Seeder
     public function run(): void
     {
         Section::create([
-            'name' => '1 - makahiya',
-            'teacher_id' => 1
+            'level' => 2,
+            'section_name' => 'mahogany',
+            'teacher_id' => 3
         ]);
     }
 }

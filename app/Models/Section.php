@@ -10,7 +10,8 @@ class Section extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'level',
+        'section_name',
         'teacher_id'
     ];
 

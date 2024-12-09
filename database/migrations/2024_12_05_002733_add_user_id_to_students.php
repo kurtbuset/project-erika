@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('user_id') // Adds the new column
                   ->nullable()           // Allows it to be null (optional relationship)
                   ->constrained('users') // References the 'users' table
-                  ->onDelete('set null'); // If a user is deleted, set this column to null
+                  ->onDelete('cascade'); // If a user is deleted, set this column to null
         });
     }
 

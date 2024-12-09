@@ -13,6 +13,7 @@ class StudentController extends Controller
     public function showGrades()
     {
         $user = auth()->user();
+        // dd($user); 
 
         // Get the associated student
         $student = $user->student;

@@ -3,73 +3,113 @@
 @section('contents')
 
 <div class="container-fluid">
-<div class="card shadow mb-4 p-3">
-<div class="card-header py-3 d-flex flex-column">
-    <h3>Add student</h3>
+    <div class="card shadow mb-4 p-3">
+        <div class="card-header py-3 d-flex flex-column">
+            <h3>Add student</h3>
 
-</div>
+        </div>
 
-<div class="card-body">
-    <div class="table-responsive">
-        <form action="{{ route('registrar.store') }}" method="post">
-            @csrf   
-            <div class="w-100 mb-4" style="display: flex; justify-content: between; gap: .5em;">
-                <div class="w-50">
-                    <label for="">Name:</label>
-                    <input type="text" class="form-control bg-light border-1 small" placeholder="your name" aria-label="Search" aria-describedby="basic-addon2" name="name">
-                    @error('name')
+        <div class="card-body">
+            <div class="table-responsive">
+                <form action="{{ route('registrar.store') }}" method="post">
+                    @csrf
+                    <div class="w-100 mb-4" style="display: flex; justify-content: between; gap: .5em;">
+                        <div style="width: 35%;">
+                            <label for="">Name:</label>
+                            <input type="text" class="form-control bg-light border-1 small" placeholder="your name" aria-label="Search" aria-describedby="basic-addon2" name="name">
+                            @error('name')
+                            <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="w-25">
+                            <label for="">Email:</label>
+                            <input type="email" class="form-control bg-light border-1 small" placeholder="yourname@gmail.com" aria-label="Search" aria-describedby="basic-addon2" name="email">
+                            @error('email')
+                            <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div style="width: 35%;" class="d-flex">
+                            <!-- Level Dropdown -->
+                            <div>
+                                <label for="level">Level:</label>
+                                <select id="level" name="level" class="text-secondary border border-1 rounded p-2 ms-3">
+                                    <option value="">Select Level</option>
+                                    @foreach ($levels as $level)
+                                    <option value="{{ $level }}">{{ $level }}</option>
+                                    @endforeach
+                                </select>
+                                @error('level')
+                                <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Section Dropdown -->
+                            <div>
+                                <label for="section">Section:</label>
+                                <select id="section" name="section" class="text-secondary border border-1 rounded p-2 ms-3">
+                                    <option value="">Select Section</option>
+                                </select>
+                                @error('section')
+                                <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label for="">Password:</label>
+                        <input type="password" class="form-control bg-light border-1 small" aria-label="Search" aria-describedby="basic-addon2" name="password" placeholder="•••••••••••">
+                        @error('password')
                         <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
-                    @enderror
-                </div>
+                        @enderror
+                    </div>
 
-                <div class="w-50">
-                    <label for="">Email:</label>
-                    <input type="email" class="form-control bg-light border-1 small" placeholder="yourname@gmail.com" aria-label="Search" aria-describedby="basic-addon2" name="email">
-                    @error('email')
+                    <div class="mb-4">
+                        <label for="">Confirm Password:</label>
+                        <input type="password" class="form-control bg-light border-1 small" aria-label="Search" aria-describedby="basic-addon2" name="confirm_password" placeholder="•••••••••••">
+                        @error('confirm_password')
                         <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
-                    @enderror
-                </div>
+                        @enderror
+                    </div>
 
-                <div class="w-25">
-                    <label for="section">Student Section:</label>
-                    <select id="section" name="section" class="text-secondary border border-1 rounded p-2 ms-3">
-                        @foreach ($sections as $class)
-                            <option class="text-secondary" value="{{ $class->id }}" {{ request()->get('section') == $class->id ? 'selected' : '' }}>
-                                {{ $class->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('section')   
-                        <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
-                    @enderror
-                </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-
-            
-
-
-            <div class="mb-4">
-                <label for="">Password:</label>
-                <input type="password" class="form-control bg-light border-1 small" aria-label="Search" aria-describedby="basic-addon2" name="password" placeholder="•••••••••••">
-                @error('password')
-                    <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label for="">Confirm Password:</label>
-                <input type="password" class="form-control bg-light border-1 small" aria-label="Search" aria-describedby="basic-addon2" name="confirm_password" placeholder="•••••••••••">
-                @error('confirm_password')
-                    <span class="text-danger" style="font-size: .7em;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-</div>
-</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#level').on('change', function() {
+            let level = $(this).val(); // Get the selected level
+            if (level) {
+                $.ajax({
+                    url: "{{ route('registrar.get.sections.by.level') }}", // Update with your route
+                    type: "GET",
+                    data: {
+                        level: level
+                    },
+                    success: function(data) {
+                        $('#section').empty(); // Clear the dropdown
+                        $('#section').append('<option value="">Select Section</option>'); // Add default option
+                        $.each(data, function(key, value) {
+                            $('#section').append(`<option value="${value.id}">${value.section_name}</option>`);
+                        });
+                    }
+                });
+            } else {
+                $('#section').empty();
+                $('#section').append('<option value="">Select Section</option>');
+            }
+        });
+    });
+</script>
+
 @endsection

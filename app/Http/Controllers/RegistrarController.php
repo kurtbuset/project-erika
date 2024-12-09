@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Monolog\Level;
 
 class RegistrarController extends Controller
 {
@@ -46,34 +47,51 @@ class RegistrarController extends Controller
         return view('registrar.show', compact('student', 'average'));
     }
 
-    public function addStudent(){
-        $sections = Section::all();
-        return view('registrar.add', compact('sections'));
+    public function addStudent()
+    {
+
+        $levels = Section::distinct()->pluck('level'); // Get unique levels
+        $sections = Section::all(); // Fetch all sections
+        return view('registrar.add', compact('levels', 'sections'));
     }
 
-    public function storeStudent(){
+    public function storeStudent()
+    {
         request()->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|min:8',
+            'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'section' => 'required|exists:sections,id'
+            'level' => 'required|exists:sections,level', // Validate level exists in sections
+            'section' => 'required|exists:sections,id',  // Validate section exists in sections
         ]);
-        
+
+        // Check if the selected section belongs to the selected level
+        $section = Section::where('id', request('section'))
+            ->where('level', request('level'))
+            ->first();
+
+        if (!$section) {
+            return back()->withErrors(['section' => 'The selected section does not match the selected level.'])->withInput();
+        }
+
+        // Create user
         $user = User::create([
             'name' => request('name'),
             'email' => request('email'),
             'password' => bcrypt(request('password')),
-            'type' => 0
+            'type' => 0,
         ]);
 
+        // Create student and store the matching section_id
         $student = Student::create([
             'name' => request('name'),
             'user_id' => $user->id,
-            'class_id' => request('section')
+            'section_id' => $section->id, // Store the section ID
         ]);
 
-        $quarters = ['1st', '2nd', '3rd', '4th']; // Define quarters
+        // Create default grades for the student
+        $quarters = ['1st Quarter', '2nd Quarter', '3rd Quarter', '4th Quarter'];
         foreach ($quarters as $quarter) {
             Grade::create([
                 'student_id' => $student->id,
@@ -81,6 +99,15 @@ class RegistrarController extends Controller
                 'grade' => 0, // Default grade
             ]);
         }
-        return redirect(route('registrar.index'))->with('success', 'Student added succesfully');
+
+        return redirect(route('registrar.index'))->with('success', 'Student added successfully');
+    }
+
+
+
+    public function getSectionsByLevel(Request $request)
+    {
+        $sections = Section::where('level', $request->level)->get(['id', 'section_name']);
+        return response()->json($sections);
     }
 }

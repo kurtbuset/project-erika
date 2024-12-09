@@ -15,7 +15,7 @@ class StudentTableSeeder extends Seeder
     {
         Student::create([
             'name' => 'bagnot',
-            'class_id' => 3,
+            'section_id' => 3,
             'user_id' => 5
         ]);
     }

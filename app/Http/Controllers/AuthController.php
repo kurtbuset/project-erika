@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login(){
-        // Grade::create([
-        //     'student_id' => 2,
-        //     'class_id' => 1,
-        //     'quarter' => '1st quarter',
-        //     'grade' => 90
-        // ]);
         return view('auth.login');
     }
 
