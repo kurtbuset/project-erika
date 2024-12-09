@@ -36,12 +36,10 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/list-of-students', [TeacherController::class, 'index'])->name('teacher.index');
     Route::get('/teacher/schedule', [TeacherController::class, 'showSchedule'])->name('teacher.show.schedule');
     Route::get('teacher/get-sections-by-level', [TeacherController::class, 'getSectionsByLevel'])->name('teacher.get.sections.by.level');
-    Route::get('/filter-students', [TeacherController::class, 'filterStudents'])->name('filter.students');
+    Route::get('/teacher/filter-students', [TeacherController::class, 'filterStudents'])->name('teacher.filter.students');
     Route::get('/teacher/{student}/grade', [TeacherController::class, 'view'])->name('teacher.view');
     Route::get('/teacher/edit-grade/{student}', [TeacherController::class, 'editGrade'])->name('teacher.edit.grade');
     Route::put('/students/{student}/grades/update-all', [TeacherController::class, 'updateAllGrades'])->name('teacher.update.all.grades');
-    
-
 });
 
 
@@ -50,8 +48,7 @@ Route::middleware(['auth', 'role:registrar'])->group(function () {
     Route::get('/registrar', [RegistrarController::class, 'index'])->name('registrar.index');
     Route::get('/registrar/get-sections-by-level', [RegistrarController::class, 'getSectionsByLevel'])->name('registrar.get.sections.by.level');
     Route::post('/registrar/store', [RegistrarController::class, 'storeStudent'])->name('registrar.store');
-    Route::get('/registrar/{student}', [RegistrarController::class, 'show'])->name('registrar.show');
-    
+    Route::get('/registrar/{student}', [RegistrarController::class, 'show'])->name('registrar.show'); 
 });
 
 Route::middleware(['auth'])->get('/dashboard', function () {

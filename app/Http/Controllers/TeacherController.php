@@ -45,29 +45,37 @@ class TeacherController extends Controller
     }
 
 
-
-
     public function filterStudents(Request $request)
     {
         $teacher = Auth::user();
 
-        // Query students based on level and section
         $students = Student::with('section')
             ->whereHas('section', function ($query) use ($teacher, $request) {
                 $query->where('teacher_id', $teacher->id);
 
-                if ($request->has('level') && $request->level != '') {
+                if ($request->level) {
                     $query->where('level', $request->level);
                 }
 
-                if ($request->has('section') && $request->section != '') {
+                if ($request->section) {
                     $query->where('id', $request->section);
                 }
-            })
-            ->get();
+            });
+
+        if ($request->search) {
+            $students = $students->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('id', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $students = $students->get(['id', 'name']); // Limit to required columns
 
         return response()->json($students);
     }
+
+
+
 
     public function getSectionsByLevel(Request $request)
     {
