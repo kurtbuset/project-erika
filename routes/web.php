@@ -44,8 +44,11 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 
 
 Route::middleware(['auth', 'role:registrar'])->group(function () {
+    Route::get('/registrar/dashboard', [RegistrarController::class, 'dashboard'])->name('registrar.dashboard');
     Route::get('/registrar/add-student', [RegistrarController::class, 'addStudent'])->name('registrar.add.student');
-    Route::get('/registrar', [RegistrarController::class, 'index'])->name('registrar.index');
+    Route::get('/registrar/list-of-students', [RegistrarController::class, 'index'])->name('registrar.index');
+    Route::get('/registrar/filter-students', [RegistrarController::class, 'filterStudents'])->name('registrar.filter.students');
+
     Route::get('/registrar/get-sections-by-level', [RegistrarController::class, 'getSectionsByLevel'])->name('registrar.get.sections.by.level');
     Route::post('/registrar/store', [RegistrarController::class, 'storeStudent'])->name('registrar.store');
     Route::get('/registrar/{student}', [RegistrarController::class, 'show'])->name('registrar.show'); 

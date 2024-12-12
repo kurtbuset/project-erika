@@ -8,32 +8,72 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Monolog\Level;
 
 class RegistrarController extends Controller
 {
+    public function dashboard(){
+        $studentsCount = Student::count(); // Count total students
+        $sectionsCount = Section::count(); // Count total sections
+        $teachersCount = User::where('type', 1)->count();
+        return view('registrar.dashboard', compact('studentsCount', 'sectionsCount', 'teachersCount'));
+    }
     public function index(Request $request)
     {
-        $students = Student::query();
+        $levels = Section::distinct('level')->pluck('level');
+        $sections = collect();
 
-        // Apply search filter
-        if ($request->has('search') && !empty($request->get('search'))) {
-            $students = $students->where('name', 'like', '%' . $request->get('search') . '%');
+        if ($request->has('level') && $request->level != '') {
+            $sections = Section::where('level', $request->level)->get();
         }
 
-        // Apply section filter
-        if ($request->has('section') && !empty($request->get('section'))) {
-            $students = $students->where('class_id', $request->get('section'));
-        }
+        $students = Student::with('section')
+            ->whereHas('section', function ($query) use ($request) {
+                if ($request->has('level') && $request->level != '') {
+                    $query->where('level', $request->level);
+                }
 
-        // Fetch all sections for the dropdown
-        $sections = Section::all();
+                if ($request->has('section') && $request->section != '') {
+                    $query->where('id', $request->section);
+                }
+            })
+            ->get();
 
-        // Paginate the filtered results
-        $students = $students->paginate(5);
-
-        return view('registrar.index', compact('students', 'sections'));
+        return view('registrar.index', compact('levels', 'sections', 'students'));
     }
+
+
+
+    public function filterStudents(Request $request)
+    {
+        $sections = [];
+        if ($request->has('level') && $request->level != '') {
+            $sections = Section::where('level', $request->level)->get(['id', 'section_name']);
+        }
+
+
+        $students = Student::with('section')
+            ->whereHas('section', function ($query) use ($request) {
+                if ($request->level) {
+                    $query->where('level', $request->level);
+                }
+
+                if ($request->section) {
+                    $query->where('id', $request->section);
+                }
+            })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%'); // Search by name
+            })
+            ->get(['id', 'name']);
+
+        return response()->json([
+            'students' => $students,
+            'sections' => $sections
+        ]);
+    }
+
+
+
 
 
     public function show(Student $student)

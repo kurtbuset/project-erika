@@ -38,7 +38,7 @@ class AuthController extends Controller
             case 'teacher': // Teacher
                 return redirect(route('teacher.show.schedule'));
             case 'registrar': // Registrar
-                return redirect(route('registrar.index'));
+                return redirect(route('registrar.dashboard'));
             default:
                 Auth::logout();
                 // dd('asd');

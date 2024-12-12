@@ -45,16 +45,17 @@
 
             @if( Auth::user()->type == 'registrar' )
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('registrar.index') }}">
+                <a class="nav-link" href="{{ route('registrar.dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-            
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('registrar.add.student') }}">
+                <a class="nav-link" href="{{ route('registrar.index') }}">
                     <i class="fa-solid fa-user"></i>
-                    <span>Add Student</span></a>
+                    <span>List of Students</span></a>
             </li>
+
             @elseif(Auth::user()->type == 'teacher')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('teacher.show.schedule') }}">
@@ -102,7 +103,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; simple grading system 2024</span>
                     </div>
                 </div>
             </footer>

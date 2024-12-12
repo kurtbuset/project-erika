@@ -41,10 +41,10 @@
                             <div class="col-lg-6 d-none d-lg-block bg-login-image">
                                 <!-- <img src="{{asset('vendor/img/bcimage1.png')}}" alt=""> -->
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6">  
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Basic Education Grading System</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Simple Grading System</h1>
                                     </div>
                                     <form class="user" method="post" action="{{ route('login.action') }}">
                                         @csrf
